@@ -1,0 +1,11 @@
+langchain
+faiss-cpu
+transformers
+torch
+sentence-transformers
+biopython
+pandas
+numpy
+tqdm
+python-dotenv
+requests
