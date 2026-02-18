@@ -1,14 +1,6 @@
 biopython
 faiss-cpu
-langchain
-langchain-community
-langchain-core
-langchain-huggingface
 numpy
-pandas
-python-dotenv
 requests
 sentence-transformers
-torch
 tqdm
-transformers

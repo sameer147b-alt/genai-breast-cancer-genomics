@@ -1,42 +1,51 @@
-import requests
+import argparse
 import json
 import os
-from tqdm import tqdm
 import time
+from pathlib import Path
 
-# ==============================
-# CONFIG
-# ==============================
+import requests
+from requests.adapters import HTTPAdapter
+from tqdm import tqdm
+from urllib3.util.retry import Retry
+
+
 GENES = ["BRCA1", "BRCA2", "TP53", "PIK3CA", "ERBB2"]
-OUTPUT_DIR = "data/uniprot"
+OUTPUT_DIR = Path("data/uniprot")
 BASE_URL = "https://rest.uniprot.org/uniprotkb/search"
+REQUEST_DELAY = float(os.getenv("UNIPROT_REQUEST_DELAY", "0.5"))
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-HEADERS = {
-    "User-Agent": "genai-breast-cancer-genomics/1.0"
-}
+HEADERS = {"User-Agent": "genai-breast-cancer-genomics/1.0"}
 
-# ==============================
-# UNIPROT FETCH
-# ==============================
-def fetch_uniprot(gene: str):
-    """
-    Fetch reviewed (Swiss-Prot) UniProt entry for a gene
-    """
+
+def build_session() -> requests.Session:
+    retry = Retry(
+        total=3,
+        backoff_factor=0.7,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+
+    session = requests.Session()
+    session.headers.update(HEADERS)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
+
+
+def fetch_uniprot(gene: str, session: requests.Session) -> dict | None:
     query = f"gene_exact:{gene} AND reviewed:true"
-    params = {
-        "query": query,
-        "format": "json",
-        "size": 1
-    }
+    params = {"query": query, "format": "json", "size": 1}
 
     try:
-        response = requests.get(BASE_URL, params=params, headers=HEADERS, timeout=20)
+        response = session.get(BASE_URL, params=params, timeout=20)
         response.raise_for_status()
         data = response.json()
-    except Exception as e:
-        print(f"[ERROR] UniProt request failed for {gene}: {e}")
+    except Exception as exc:
+        print(f"[ERROR] UniProt request failed for {gene}: {exc}")
         return None
 
     results = data.get("results", [])
@@ -45,69 +54,61 @@ def fetch_uniprot(gene: str):
         return None
 
     entry = results[0]
-
-    # ==============================
-    # PARSING
-    # ==============================
-    protein_name = ""
-    functions = []
-    subcellular = []
-    diseases = []
-
-    # Protein name
     protein_desc = entry.get("proteinDescription", {})
     recommended = protein_desc.get("recommendedName", {})
     protein_name = recommended.get("fullName", {}).get("value", "")
 
-    # Comments
+    functions: list[str] = []
+    subcellular: list[str] = []
+    diseases: list[str] = []
+
     for comment in entry.get("comments", []):
-        ctype = comment.get("commentType")
+        comment_type = comment.get("commentType")
 
-        # Function
-        if ctype == "FUNCTION":
-            for txt in comment.get("texts", []):
-                functions.append(txt.get("value", ""))
+        if comment_type == "FUNCTION":
+            for text in comment.get("texts", []):
+                functions.append(text.get("value", ""))
 
-        # Subcellular location
-        if ctype == "SUBCELLULAR LOCATION":
-            for loc in comment.get("subcellularLocations", []):
-                location = loc.get("location", {}).get("value", "")
+        if comment_type == "SUBCELLULAR LOCATION":
+            for location_data in comment.get("subcellularLocations", []):
+                location = location_data.get("location", {}).get("value", "")
                 if location:
                     subcellular.append(location)
 
-        # Disease association
-        if ctype == "DISEASE":
-            disease = comment.get("disease", {})
-            desc = disease.get("description", "")
-            if desc:
-                diseases.append(desc)
+        if comment_type == "DISEASE":
+            description = comment.get("disease", {}).get("description", "")
+            if description:
+                diseases.append(description)
 
-    # Fallback if function missing
     if not functions:
         for comment in entry.get("comments", []):
             if comment.get("commentType") == "SIMILARITY":
                 functions.append("Function inferred from sequence similarity")
 
-    record = {
+    return {
         "gene": gene,
         "uniprot_id": entry.get("primaryAccession", ""),
         "protein_name": protein_name,
         "function": " ".join(functions),
-        "subcellular_location": sorted(list(set(subcellular))),
-        "disease_association": sorted(list(set(diseases)))
+        "subcellular_location": sorted(set(subcellular)),
+        "disease_association": sorted(set(diseases)),
     }
 
-    return record
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Fetch UniProt gene annotations.")
+    parser.add_argument("--genes", nargs="+", default=GENES)
+    return parser.parse_args()
 
 
-# ==============================
-# MAIN
-# ==============================
 if __name__ == "__main__":
-    for gene in tqdm(GENES, desc="Fetching UniProt annotations"):
-        record = fetch_uniprot(gene)
+    args = parse_args()
+    session = build_session()
+
+    for gene in tqdm(args.genes, desc="Fetching UniProt annotations"):
+        record = fetch_uniprot(gene, session)
         if record:
-            out_path = os.path.join(OUTPUT_DIR, f"{gene}.json")
-            with open(out_path, "w", encoding="utf-8") as f:
-                json.dump(record, f, indent=2, ensure_ascii=False)
-        time.sleep(1)  # polite rate limiting
+            output_path = OUTPUT_DIR / f"{gene}.json"
+            with open(output_path, "w", encoding="utf-8") as file:
+                json.dump(record, file, indent=2, ensure_ascii=False)
+        time.sleep(REQUEST_DELAY)
