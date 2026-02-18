@@ -1,0 +1,15 @@
+{
+  "gene": "TP53",
+  "uniprot_id": "O09185",
+  "protein_name": "Cellular tumor antigen p53",
+  "function": "Multifunctional transcription factor that induces cell cycle arrest, DNA repair or apoptosis upon binding to its target DNA sequence. Acts as a tumor suppressor in many tumor types; induces growth arrest or apoptosis depending on the physiological circumstances and cell type. Negatively regulates cell division by controlling expression of a set of genes required for this process. One of the activated genes is an inhibitor of cyclin-dependent kinases. Apoptosis induction seems to be mediated either by stimulation of BAX and FAS antigen expression, or by repression of Bcl-2 expression. Its pro-apoptotic activity is activated via its interaction with PPP1R13B/ASPP1 or TP53BP2/ASPP2 (By similarity). However, this activity is inhibited when the interaction with PPP1R13B/ASPP1 or TP53BP2/ASPP2 is displaced by PPP1R13L/iASPP (By similarity). In cooperation with mitochondrial PPIF is involved in activating oxidative stress-induced necrosis; the function is largely independent of transcription. Prevents CDK7 kinase activity when associated to CAK complex in response to DNA damage, thus stopping cell cycle progression. Induces the transcription of long intergenic non-coding RNA p21 (lincRNA-p21) and lincRNA-Mkln1. LincRNA-p21 participates in TP53-dependent transcriptional repression leading to apoptosis and seems to have an effect on cell-cycle regulation. Regulates the circadian clock by repressing CLOCK-BMAL1-mediated transcriptional activation of PER2",
+  "subcellular_location": [
+    "Cytoplasm",
+    "Cytoplasm, cytoskeleton, microtubule organizing center, centrosome",
+    "Endoplasmic reticulum",
+    "Mitochondrion matrix",
+    "Nucleus",
+    "Nucleus, PML body"
+  ],
+  "disease_association": []
+}

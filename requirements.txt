@@ -1,0 +1,9 @@
+biopython
+faiss-cpu
+langchain-community
+langchain-core
+langchain-huggingface
+numpy
+requests
+sentence-transformers
+tqdm

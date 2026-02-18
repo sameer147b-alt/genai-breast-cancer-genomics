@@ -1,0 +1,14 @@
+BRCA1 and BRCA2 are tumor suppressor genes involved in DNA repair.
+Mutations in BRCA1 significantly increase the risk of breast and ovarian cancer.
+
+TP53 is one of the most frequently mutated genes in breast cancer.
+It regulates the cell cycle and apoptosis.
+
+HER2 (ERBB2) amplification leads to aggressive breast cancer subtypes.
+HER2-positive cancers respond to targeted therapies like trastuzumab.
+
+Hormone receptor-positive breast cancers express estrogen (ER) and/or progesterone (PR) receptors.
+These cancers are commonly treated with hormone therapy.
+
+Triple-negative breast cancer lacks ER, PR, and HER2 expression.
+It is aggressive and has limited targeted treatment options.

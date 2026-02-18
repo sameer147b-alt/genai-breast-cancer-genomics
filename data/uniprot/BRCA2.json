@@ -1,0 +1,18 @@
+{
+  "gene": "BRCA2",
+  "uniprot_id": "P51587",
+  "protein_name": "Breast cancer type 2 susceptibility protein",
+  "function": "Involved in double-strand break repair and/or homologous recombination. Binds RAD51 and potentiates recombinational DNA repair by promoting assembly of RAD51 onto single-stranded DNA (ssDNA). Acts by targeting RAD51 to ssDNA over double-stranded DNA, enabling RAD51 to displace replication protein-A (RPA) from ssDNA and stabilizing RAD51-ssDNA filaments by blocking ATP hydrolysis. Part of a PALB2-scaffolded HR complex containing RAD51C and which is thought to play a role in DNA repair by HR. May participate in S phase checkpoint activation. Binds selectively to ssDNA, and to ssDNA in tailed duplexes and replication fork structures. May play a role in the extension step after strand invasion at replication-dependent DNA double-strand breaks; together with PALB2 is involved in both POLH localization at collapsed replication forks and DNA polymerization activity. In concert with NPM1, regulates centrosome duplication. Interacts with the TREX-2 complex (transcription and export complex 2) subunits PCID2 and SEM1, and is required to prevent R-loop-associated DNA damage and thus transcription-associated genomic instability. Silencing of BRCA2 promotes R-loop accumulation at actively transcribed genes in replicating and non-replicating cells, suggesting that BRCA2 mediates the control of R-loop associated genomic instability, independently of its known role in homologous recombination (PubMed:24896180)",
+  "subcellular_location": [
+    "Cytoplasm, cytoskeleton, microtubule organizing center, centrosome",
+    "Nucleus"
+  ],
+  "disease_association": [
+    "A common malignancy originating from breast epithelial tissue. Breast neoplasms can be distinguished by their histologic pattern. Invasive ductal carcinoma is by far the most common type. Breast cancer is etiologically and genetically heterogeneous. Important genetic factors have been indicated by familial occurrence and bilateral involvement. Mutations at more than one locus can be involved in different families or even in the same case.",
+    "A condition associated with familial predisposition to cancer of the breast and ovaries. Characteristic features in affected families are an early age of onset of breast cancer (often before age 50), increased chance of bilateral cancers (cancer that develop in both breasts, or both ovaries, independently), frequent occurrence of breast cancer among men, increased incidence of tumors of other specific organs, such as the prostate.",
+    "A disorder affecting all bone marrow elements and resulting in anemia, leukopenia and thrombopenia. It is associated with cardiac, renal and limb malformations, dermal pigmentary changes, and a predisposition to the development of malignancies. At the cellular level it is associated with hypersensitivity to DNA-damaging agents, chromosomal instability (increased chromosome breakage) and defective DNA repair.",
+    "A malignant neoplasm of the pancreas. Tumors can arise from both the exocrine and endocrine portions of the pancreas, but 95% of them develop from the exocrine portion, including the ductal epithelium, acinar cells, connective tissue, and lymphatic tissue.",
+    "Gliomas are benign or malignant central nervous system neoplasms derived from glial cells. They comprise astrocytomas and glioblastoma multiforme that are derived from astrocytes, oligodendrogliomas derived from oligodendrocytes and ependymomas derived from ependymocytes.",
+    "Malignant, invasive embryonal tumor of the cerebellum with a preferential manifestation in children."
+  ]
+}
